@@ -1,10 +1,20 @@
-Package: n2khab-mne-databases
+Package: mnedbcon
 Title: Manage connection to MNE databases.
 Version: 0.1
-Authors@R: 
-    person("Falk", "Mielke", , "falk.mielke@inbo.be", role = c("aut", "cre")) #
-Description: This package can be used to quickly connect to MNE databases, providing functions which facilitate database interaction (e.g. queries).
+Authors@R: c(
+  person("Falk", "Mielke", , "falk.mielke@inbo.be", role = c("aut", "cre"),
+           comment = c(ORCID = "0000-0003-3229-0981")
+  ))
+Description: This package can be used to quickly connect to MNE databases, providing functions which facilitate database interaction (e.g. table queries)
 License: CC BY 4.0
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 8.1.0
+Imports: 
+    configr,
+    DBI,
+    glue,
+    keyring
+Suggests: 
+    testthat (>= 3.0.0)
+Config/testthat/edition: 3
+Config/roxygen2/version: 8.1.0
