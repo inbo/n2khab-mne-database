@@ -4,8 +4,7 @@ Version: 0.1
 Authors@R: 
     person("Falk", "Mielke", , "falk.mielke@inbo.be", role = c("aut", "cre")) #
 Description: This package can be used to quickly connect to MNE databases, providing functions which facilitate database interaction (e.g. queries).
-License: `use_mit_license()`, `use_gpl3_license()` or friends to pick a
-    license
+License: CC BY 4.0
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 8.1.0
