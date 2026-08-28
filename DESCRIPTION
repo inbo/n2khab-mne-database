@@ -5,7 +5,7 @@ Authors@R: c(
   person("Falk", "Mielke", , "falk.mielke@inbo.be", role = c("aut", "cre"),
            comment = c(ORCID = "0000-0003-3229-0981")
   ))
-Description: quickly connect to MNE databases, providing functions which facilitate database interaction (e.g. table queries)
+Description: Quickly connect to MNE databases, providing functions which facilitate database interaction (e.g. table queries).
 License: CC BY 4.0
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
