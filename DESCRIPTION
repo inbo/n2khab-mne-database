@@ -1,11 +1,11 @@
 Package: mnedbcon
-Title: Manage connection to MNE databases.
+Title: Manage connection to MNE databases
 Version: 0.1
 Authors@R: c(
   person("Falk", "Mielke", , "falk.mielke@inbo.be", role = c("aut", "cre"),
            comment = c(ORCID = "0000-0003-3229-0981")
   ))
-Description: This package can be used to quickly connect to MNE databases, providing functions which facilitate database interaction (e.g. table queries)
+Description: quickly connect to MNE databases, providing functions which facilitate database interaction (e.g. table queries)
 License: CC BY 4.0
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
@@ -13,7 +13,8 @@ Imports:
     configr,
     DBI,
     glue,
-    keyring
+    keyring,
+    S7
 Suggests: 
     testthat (>= 3.0.0)
 Config/testthat/edition: 3
