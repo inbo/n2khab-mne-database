@@ -1,4 +1,4 @@
-Package: mnedbcon
+Package: mnmdb
 Title: Manage connection to MNE databases
 Version: 0.1
 Authors@R: c(

@@ -7,6 +7,6 @@
 # * https://testthat.r-lib.org/articles/special-files.html
 
 library(testthat)
-library(mnedbcon)
+library(mnmdb)
 
-test_check("mnedbcon")
+test_check("mnmdb")
