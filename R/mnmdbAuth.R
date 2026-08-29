@@ -28,13 +28,13 @@ mnmdbAuth <- S7::new_class(
     port = S7::class_character,
     database = S7::class_character,
     user = S7::class_character
-  ),
-  validator = function(self) {
-  }
+  )
 )
 
-# require_pkgs(c("configr"), quietly = TRUE)
 
+# require_pkgs(c("configr"), quietly = TRUE)
+# MNMDatabaseConnection.R // connect_database_configfile
+# config <- configr::read.config(file = config_filepath)[[1]]
 
 #' Authentication for mnmdb via config file
 #'
@@ -59,3 +59,13 @@ mnmdbAuthConf <- S7::new_class(
     }
   }
 )
+
+#' generic for description of database auth
+describe <- S7::new_generic("describe", "auth")
+S7::method(describe, mnmdbAuth) <- function(auth) {
+  paste0(
+    auth@user, " @ ",
+    auth@host, ":", auth@port,
+    " -d ", auth@database
+  )
+}

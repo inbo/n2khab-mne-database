@@ -8,7 +8,8 @@
 #' \code{install.packages()} command to install them.
 #'
 #' @param pkgs A character vector of package names.
-#' @inheritParams requireNamespace
+#' @param quietly non-verbose check for requirements
+#' @param ... more parameters for base::requireNamespace
 #'
 #' @examples
 #' \dontrun{

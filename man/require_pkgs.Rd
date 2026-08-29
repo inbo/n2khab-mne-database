@@ -4,15 +4,14 @@
 \alias{require_pkgs}
 \title{Check availability of required packages}
 \usage{
-require_pkgs(pkgs, quietly = TRUE, ...)
+require_pkgs(pkgs, ...)
 }
 \arguments{
 \item{pkgs}{A character vector of package names.}
 
-\item{quietly}{logical: should progress and error messages be suppressed?
-(from ?loadNamespace)}
+\item{...}{more parameters for base::requireNamespace}
 
-\item{...}{further parameters passed to \code{require} or \code{requireNamespace}}
+\item{quietly}{non-verbose check for requirements}
 }
 \description{
 Takes a vector of package names and passes each name to
