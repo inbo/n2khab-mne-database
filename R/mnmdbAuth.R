@@ -9,8 +9,8 @@
 #' @details tbd
 #'
 #' @param folder the structure folder with csv files for all tables
-#' @param host the host (IP address or url); default 'localhost'
-#' @param port on which the host listens for input; default '5439'
+#' @param host the host (IP address or url); default '127.0.0.1'
+#' @param port on which the host listens for input; default '5432'
 #' @param database name of the database to access
 #' @param user username to get connected
 #'
@@ -24,10 +24,17 @@ mnmdbAuth <- S7::new_class(
   properties = list(
     # config_file = S7::class_character
     folder = S7::class_character,
-    host = S7::class_character,
-    port = S7::class_character,
+    host = S7::new_property(
+      class = S7::class_character,
+      default = "127.0.0.1"
+    ),
+    port = S7::new_property(
+      class = S7::class_integer | S7::class_character,
+      default = "5432"
+    ),
     database = S7::class_character,
-    user = S7::class_character
+    user = S7::class_character,
+    password = new_property(S7::class_character, default = NULL)
   )
 )
 
@@ -53,12 +60,19 @@ mnmdbAuthConf <- S7::new_class(
   properties = list(
     config_file = S7::class_character
   ),
+  # constructor = function() {},
   validator = function(self) {
+    if (isFALSE(is.character(self@config_file))) {
+      return("The config file argument @config_file must be a character.")
+    }
     if (isFALSE(file.exists(self@config_file))) {
       return("The config file @config_file does not exist!")
     }
   }
 )
+
+# props(x) <- list(name1 = val1, name2 = val2) modifies an existing object by setting multiple properties simultaneously.
+
 
 #' generic for description of database auth
 describe <- S7::new_generic("describe", "auth")

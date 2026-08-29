@@ -6,10 +6,11 @@
 \usage{
 mnmdbAuth(
   folder = character(0),
-  host = character(0),
-  port = character(0),
+  host = "127.0.0.1",
+  port = "5432",
   database = character(0),
-  user = character(0)
+  user = character(0),
+  password = character(0)
 )
 }
 \arguments{
