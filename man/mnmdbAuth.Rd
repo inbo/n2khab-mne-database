@@ -4,21 +4,14 @@
 \alias{mnmdbAuth}
 \title{Authentication for mnmdb via connection parameters}
 \usage{
-mnmdbAuth(
-  folder = character(0),
-  host = "127.0.0.1",
-  port = "5432",
-  database = character(0),
-  user = character(0),
-  password = character(0)
-)
+mnmdbAuth(...)
 }
 \arguments{
 \item{folder}{the structure folder with csv files for all tables}
 
-\item{host}{the host (IP address or url); default 'localhost'}
+\item{host}{the host (IP address or url); default '127.0.0.1'}
 
-\item{port}{on which the host listens for input; default '5439'}
+\item{port}{on which the host listens for input; default '5432'}
 
 \item{database}{name of the database to access}
 

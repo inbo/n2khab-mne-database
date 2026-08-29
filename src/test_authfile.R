@@ -5,10 +5,12 @@ auth <- mnmdbAuth(
   host = "127.0.0.1",
   port = "5432",
   database = "sandbox",
-  user = "guest"
+  user = "guest",
+  password = "abc123"
 )
 
 describe(auth)
+print(auth@password)
 
 
 authcfg <- mnmdbAuthConf(
@@ -17,5 +19,10 @@ authcfg <- mnmdbAuthConf(
 
 describe(authcfg)
 S7::S7_class(authcfg)
+print(authcfg@password)
 
 mnmdbConnection(auth = authcfg)
+
+
+
+# TODO test integer port

@@ -4,27 +4,9 @@
 \alias{mnmdbAuthConf}
 \title{Authentication for mnmdb via config file}
 \usage{
-mnmdbAuthConf(
-  folder = character(0),
-  host = "127.0.0.1",
-  port = "5432",
-  database = character(0),
-  user = character(0),
-  password = character(0),
-  config_file = character(0)
-)
+mnmdbAuthConf(config_file)
 }
 \arguments{
-\item{folder}{the structure folder with csv files for all tables}
-
-\item{host}{the host (IP address or url); default 'localhost'}
-
-\item{port}{on which the host listens for input; default '5439'}
-
-\item{database}{name of the database to access}
-
-\item{user}{username to get connected}
-
 \item{config_file}{file.path to a config file to load with \code{configr}}
 }
 \description{

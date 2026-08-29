@@ -13,6 +13,7 @@
 #' @param port on which the host listens for input; default '5432'
 #' @param database name of the database to access
 #' @param user username to get connected
+#' @param password password to connect; NA if .pgpass is used
 #'
 #' @examples
 #' \dontrun{
@@ -34,8 +35,30 @@ mnmdbAuth <- S7::new_class(
     ),
     database = S7::class_character,
     user = S7::class_character,
-    password = S7::new_property(S7::class_character, default = NULL)
-  )
+    password = S7::new_property(S7::class_character | NULL, default = NULL)
+  ),
+  constructor = function(...) {
+    # TODO set defaults, overwrite by config, overwrite by user input
+    # Then write password to keyring
+    params <- list(...)
+
+    # remove password so that it does not retain in memory
+    params[["password"]] <- NULL
+    print(params)
+
+    return(
+      S7::new_object(`mnmdbAuth`,
+        folder = params$folder,
+        host = params$host,
+        port = params$port,
+        database = params$database,
+        user = params$user,
+        password = NULL
+      )
+    )
+
+    # return(do.call("S7::new_object", c(list(`mnmdbAuth`), params)))
+  }
 )
 
 
@@ -60,16 +83,24 @@ mnmdbAuthConf <- S7::new_class(
   properties = list(
     config_file = S7::class_character
   ),
-  constructor = function(config_file) {
+  constructor = function(config_file, ...) {
+    # TODO set defaults, overwrite by config, overwrite by user input
+
+    params <- list(...)
+
+    # remove password so that it does not retain in memory
+    params[["password"]] <- NULL
+    print(params)
+
     return(
       S7::new_object(`mnmdbAuthConf`,
-        folder = ".",
-        host = "127.0.0.1",
-        port = "5432",
-        database = "sandbox",
-        user = "guest",
-        password = "abc123",
-        config_file = config_file
+        config_file = config_file,
+        folder = ".", #params$folder,
+        host = "127.0.0.1", #params$host,
+        port = "5432", #params$port,
+        database = "sandbox", #params$database,
+        user = "user", #params$user,
+        password = NULL
       )
     )
   },
@@ -78,7 +109,7 @@ mnmdbAuthConf <- S7::new_class(
       return("The config file argument @config_file must be a character.")
     }
     if (isFALSE(file.exists(self@config_file))) {
-      return("The config file @config_file does not exist!")
+      return(glue::glue("The config file '{self@config_file}' does not exist!"))
     }
   }
 )
