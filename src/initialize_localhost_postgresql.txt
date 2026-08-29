@@ -1,0 +1,24 @@
+
+# install
+su - root
+zypper install postgresql
+systemctl start postgresql
+
+# server config
+su - postgres
+initdb --locale=C.UTF-8 --encoding=UTF8 -D /var/lib/pgsql/data --data-checksums
+createdb sandbox
+
+psql sandbox
+CREATE USER guest WITH ENCRYPTED PASSWORD 'abc123';
+exit
+
+# (as root)
+nvim /var/lib/pgsql/data/postgresql.conf
+nvim /var/lib/pgsql/data/pg_hba.conf # change `ident` to `md5`
+systemctl restart postgresql
+
+exit
+
+# test
+psql -h localhost -p 5432 -d sandbox -U guest -W

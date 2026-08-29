@@ -33,6 +33,7 @@ mnmdbAuth <- S7::new_class(
   }
 )
 
+# require_pkgs(c("configr"), quietly = TRUE)
 
 
 #' Authentication for mnmdb via config file
