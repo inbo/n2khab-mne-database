@@ -11,8 +11,11 @@ auth <- mnmdbAuth(
 describe(auth)
 
 
-authcfg <- mnmdbAuth(
+authcfg <- mnmdbAuthConf(
   config_file = file.path("config_files", "test.conf")
 )
 
 describe(authcfg)
+S7::S7_class(authcfg)
+
+mnmdbConnection(auth = authcfg)

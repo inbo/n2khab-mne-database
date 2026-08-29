@@ -34,7 +34,7 @@ mnmdbAuth <- S7::new_class(
     ),
     database = S7::class_character,
     user = S7::class_character,
-    password = new_property(S7::class_character, default = NULL)
+    password = S7::new_property(S7::class_character, default = NULL)
   )
 )
 
@@ -60,7 +60,19 @@ mnmdbAuthConf <- S7::new_class(
   properties = list(
     config_file = S7::class_character
   ),
-  # constructor = function() {},
+  constructor = function(config_file) {
+    return(
+      S7::new_object(`mnmdbAuthConf`,
+        folder = ".",
+        host = "127.0.0.1",
+        port = "5432",
+        database = "sandbox",
+        user = "guest",
+        password = "abc123",
+        config_file = config_file
+      )
+    )
+  },
   validator = function(self) {
     if (isFALSE(is.character(self@config_file))) {
       return("The config file argument @config_file must be a character.")
