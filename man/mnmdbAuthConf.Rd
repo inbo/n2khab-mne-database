@@ -4,7 +4,7 @@
 \alias{mnmdbAuthConf}
 \title{Authentication for mnmdb via config file}
 \usage{
-mnmdbAuthConf(config_file)
+mnmdbAuthConf(config_file, ...)
 }
 \arguments{
 \item{config_file}{file.path to a config file to load with \code{configr}}

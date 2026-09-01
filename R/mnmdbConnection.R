@@ -10,7 +10,10 @@ mnmdbConnection <- S7::new_class(
     auth = S7::new_property(S7::class_any, default = NULL)
   ),
   validator = function(self) {
-    if (isFALSE(S7::check_is_S7(self@auth, class = mnmdbAuth))) {
+    if (
+      isFALSE(S7::check_is_S7(self@auth, class = mnmdbAuth))
+      && isFALSE(S7::check_is_S7(self@auth, class = mnmdbAuthConf))
+    ) {
       return("Authentication object @auth required to connect to an MNE database.")
     }
   }

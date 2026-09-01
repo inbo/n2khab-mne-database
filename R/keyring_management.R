@@ -137,3 +137,39 @@ init_keyring <- function(keyring_label = "mnmdb_temp") {
 } # /init_keyring
 
 
+
+
+#' Set a password in a keyring, prompt one if none is provided.
+#'
+#' Prompt the user for a password (if none was given) and
+#' store the password to the mnmdb credential keyring
+#' with function arguments to `keyring::key_set_with_value`
+#'
+#' @param keyring label of the keyring to lock
+#' @param service "service" identifier of the keyring
+#' @param username "username" who holds the key
+#' @param password password (NULL to query one)
+#'
+store_db_password <- function(
+    keyring_label = "mnmdb_temp",
+    ...,
+    password = NULL
+  ) {
+
+  require_pkgs(c("glue", "keyring", "getPass"), quietly = TRUE)
+
+  # ensure keyring is unlocked
+  ask_password <- function() {
+    pw_prompt <- getPass::getPass(glue::glue("Password, please ({describe(auth)}): "))
+    if (keyring::keyring_is_locked(keyring_label)) unlock_keyring(keyring_label = keyring_label)
+    return(invisible(pw_prompt))
+  }
+
+  keyring::key_set_with_value(
+    keyring = keyring_label,
+    ...,
+    password = ask_password()
+    )
+
+  return(invisible(NULL))
+} # /store_db_password

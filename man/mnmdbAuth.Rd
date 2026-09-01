@@ -16,6 +16,13 @@ mnmdbAuth(...)
 \item{database}{name of the database to access}
 
 \item{user}{username to get connected}
+
+\item{password}{(optional) password to connect;
+will be prompted if no password is provided by the user}
+
+\item{connect_passwordless}{option to connect without password via .pgpass}
+
+\item{keyring_label}{(optional) select a keyring to store credentials}
 }
 \description{
 manage authentification storage for connections to mnm databases

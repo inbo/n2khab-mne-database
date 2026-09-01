@@ -1,12 +1,12 @@
-
+#!usr/bin/env Rscript
 
 auth <- mnmdbAuth(
   folder = "dbstructure_test",
-  host = "127.0.0.1",
-  port = "5432",
+  # host = "127.0.0.1",
+  # port = "5432",
   database = "sandbox",
   user = "guest",
-  password = "abc123"
+  # password = "abc123"
 )
 
 describe(auth)
