@@ -164,13 +164,12 @@ init_keyring <- function(keyring_label = "mnmdb_temp") {
 #'
 store_db_password <- function(
     keyring_label = "mnmdb_temp",
-    ...,
+    service = "mnmdb_credentials",
+    username = NULL, # should always be set
     password = NULL
   ) {
 
   require_pkgs(c("glue", "keyring", "getPass"), quietly = TRUE)
-
-  creds <- list(...)
 
   # initialize the keyring if it does not exist yet
   if (isFALSE(keyring_label %in% keyring::keyring_list()$keyring)) {
@@ -180,7 +179,7 @@ store_db_password <- function(
   # ad-hoc function to prompt a password and unlock keyring
   ask_password <- function() {
     pw_prompt <- getPass::getPass(glue::glue(
-      "Password, please ({creds$service} for {creds$username} in {keyring_label}): "
+      "Password, please ({service} for {username} in {keyring_label}): "
     ))
     # ensure keyring is unlocked *after* user input, just prior to pw storage
     # (user might take their time)
@@ -196,7 +195,8 @@ store_db_password <- function(
   # finally, set the value in keyring
   keyring::key_set_with_value(
     keyring = keyring_label,
-    ...,
+    service = service,
+    username = username,
     password = if (is.null(password)) ask_password() else password
   )
 
