@@ -10,8 +10,6 @@
 #' The `subselect` arg can be used to query only a subset of fields.
 #'
 #' @param conn the mnmdb connection
-#' @param table_id the `DBI::Id` of a table
-#' @param subselect character vector of fields to select
 #' @param ... Not used.
 #'
 #' @returns tibble or (spatial) data frame
@@ -23,6 +21,8 @@ query_table <- S7::new_generic("query_table", "conn")
 #' The actual query of a table.
 #'
 #' @rdname query_table
+#' @param table_id the `DBI::Id` of a table
+#' @param subselect character vector of fields to select
 #' @param ... Not used.
 #'
 S7::method(query_table, mnmdbConnection) <- function(conn, table_id, subselect = NA) {

@@ -32,7 +32,7 @@ never leaves the constructor function.
   auth <- mnmdb::mnmdbAuth(
     user = "guest",
     database = "sandbox",
-    connect_passwordless = True # optional for use of `~/.pgpass`
+    connect_passwordless = TRUE # optional for use of `~/.pgpass`
   )
   auth <- mnmdbAuth(
     host = "127.0.0.1",
