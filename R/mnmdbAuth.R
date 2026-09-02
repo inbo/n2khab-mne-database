@@ -15,7 +15,7 @@
 #' @param password (optional) password to connect;
 #'            will be prompted if no password is provided by the user
 #' @param connect_passwordless option to connect without password via .pgpass
-#' @param keyring_label (optional) select a keyring to store credentials
+#' @param ... not used (consturctor)
 #'
 #' @examples
 #' \dontrun{
@@ -32,6 +32,8 @@
 #'     database = "sandbox"
 #'   )
 #' }
+#'
+#' @export
 #'
 mnmdbAuth <- S7::new_class(
   name = "mnmdbAuth",
@@ -144,14 +146,15 @@ mnmdbAuth <- S7::new_class(
 #' Just as `mnmdbAuth`, but with the extra option to store authentication parameters
 #' in a config file (e.g. in the `config_files` folder).
 #'
-#' @inheritParams mnmdbAuth
-#'
 #' @param config_file file.path to a config file to load with `configr`
+#' @param ... not used (consturctor)
 #'
 #' @examples
 #' \dontrun{
 #'   auth <- mnmdb::mnmdbAuth(file.path("config_files", "test.conf"))
 #' }
+#'
+#' @export
 #'
 mnmdbAuthConf <- S7::new_class(
   name = "mnmdbAuthConf",
@@ -254,10 +257,11 @@ mnmdbAuthConf <- S7::new_class(
 # props(x) <- list(name1 = val1, name2 = val2) modifies an existing object by setting multiple properties simultaneously.
 
 
-#' generic for description of mnmdb objects
-describe <- S7::new_generic("describe", "x")
-
 #' description of database auth
+#'
+#' @rdname describe
+#' @param ... Not used.
+#'
 S7::method(describe, mnmdbAuth) <- function(x) {
   auth <- x
   paste0(

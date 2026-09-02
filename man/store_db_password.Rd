@@ -4,16 +4,21 @@
 \alias{store_db_password}
 \title{Set a password in a keyring, prompt one if none is provided.}
 \usage{
-store_db_password(keyring_label = "mnmdb_temp", ..., password = NULL)
+store_db_password(
+  keyring_label = "mnmdb_temp",
+  service = "mnmdb_credentials",
+  username = NULL,
+  password = NULL
+)
 }
 \arguments{
-\item{password}{password (NULL to query one)}
-
-\item{keyring}{label of the keyring to lock}
+\item{keyring_label}{label of the keyring to lock}
 
 \item{service}{"service" identifier of the keyring}
 
 \item{username}{"username" who holds the key}
+
+\item{password}{password (NULL to query one)}
 }
 \description{
 Prompt the user for a password (if none was given) and

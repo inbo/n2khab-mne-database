@@ -7,7 +7,7 @@
 init_keyring(keyring_label = "mnmdb_temp")
 }
 \arguments{
-\item{keyring}{label of the keyring to lock; default is "mnmdb_temp"}
+\item{keyring_label}{label of the keyring to lock; default is "mnmdb_temp"}
 }
 \description{
 This function will initialize a keyring (unless it already exists)

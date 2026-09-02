@@ -10,6 +10,7 @@
 #' to facilitate all interactions with an actual database.
 #'
 #' @param auth an mnmdbAuth object which stores authentication
+#' @param database_connection will store the connection to an mnmdb
 #'
 #' @examples
 #' \dontrun{
@@ -21,6 +22,8 @@
 #'   mnmdbconn <- mnmdbconn |> connect()
 #'   # dplyr::tbl(mnmdbconn@database_connection, DBI::Id("test", "mtcars"))
 #' }
+#'
+#' @export
 #'
 mnmdbConnection <- S7::new_class(
   name = "mnmdbConnection",
@@ -47,6 +50,11 @@ mnmdbConnection <- S7::new_class(
 )
 
 #' description of database connection
+#'
+#' @param x the connection to be described
+#'
+#' @rdname describe
+#'
 S7::method(describe, mnmdbConnection) <- function(x) {
   # unwrap
   conn <- x
@@ -65,18 +73,28 @@ S7::method(describe, mnmdbConnection) <- function(x) {
 
 
 #' generic method for database connection
+#'
+#' @description
+#' Establishing connection to a predefined postgreSQL server
+#' The function can be used in a pipe:
+#' it receives and returns a mnmdbConnection.
+#'
+#' @param conn a connection to be connected
+#' @param ... Not used.
+#'
+#' @returns mnmdbConnection with active connection
+#'
 connect <- S7::new_generic("connect", "conn")
+
 
 #' Connect a mnmdbConnection object to the actual database using `auth`.
 #'
-#' @details This function can be used in a pipe:
-#'          it receives and returns a mnmdbConnection.
-#'
-#' @param conn a mnmdbConnection connection to be connected
-#' @returns mnmdbConnection
+#' @rdname connect
+#' @param ... Not used.
 #'
 S7::method(connect, mnmdbConnection) <- function(conn) {
 
+  require_pkgs(c("DBI", "keyring", "glue"), quietly = TRUE)
 
   # shortcut for the already connected
   if (isFALSE(is.null(conn@database_connection))) {

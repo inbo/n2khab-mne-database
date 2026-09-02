@@ -7,9 +7,9 @@
 lock_keyring_delayed(keyring_label = "mnmdb_temp", delay = 3600)
 }
 \arguments{
-\item{delay}{wait time (in seconds)}
+\item{keyring_label}{label of the keyring to lock}
 
-\item{keyring}{label of the keyring to lock}
+\item{delay}{wait time (in seconds)}
 }
 \description{
 This function will launch a background process via \code{system}

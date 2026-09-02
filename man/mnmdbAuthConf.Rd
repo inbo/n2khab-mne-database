@@ -8,6 +8,8 @@ mnmdbAuthConf(config_file, ...)
 }
 \arguments{
 \item{config_file}{file.path to a config file to load with \code{configr}}
+
+\item{...}{not used (consturctor)}
 }
 \description{
 Just as \code{mnmdbAuth}, but with the extra option to store authentication parameters

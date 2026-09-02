@@ -7,9 +7,9 @@
 unlock_keyring(keyring_label = "mnmdb_temp", ...)
 }
 \arguments{
-\item{...}{additional parameters for \code{keyring::keyring_unlock()}}
+\item{keyring_label}{label of the keyring to lock}
 
-\item{keyring}{label of the keyring to lock}
+\item{...}{additional parameters for \code{keyring::keyring_unlock()}}
 }
 \description{
 This function will unlock a given keyring, but immediately schedule

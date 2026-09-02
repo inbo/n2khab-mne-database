@@ -9,9 +9,8 @@ require_pkgs(pkgs, ...)
 \arguments{
 \item{pkgs}{A character vector of package names.}
 
-\item{...}{more parameters for base::requireNamespace}
-
-\item{quietly}{non-verbose check for requirements}
+\item{...}{more parameters for base::requireNamespace
+(e.g. \code{quietly} for non-verbose check for requirements)}
 }
 \description{
 Takes a vector of package names and passes each name to

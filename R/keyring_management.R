@@ -7,7 +7,7 @@
 #' The purpose is to leave no passwords in store after a session ends.
 #' Tip: the `seahorse` util can be used to browse the system keyring.
 #'
-#' @param keyring keyring label to empty (do not use `Login`!)
+#' @param keyring_label keyring label to empty (do not use `Login`!)
 #'
 terminate_keyring <- function(keyring_label = "mnmdb_temp") {
 
@@ -53,7 +53,7 @@ terminate_keyring <- function(keyring_label = "mnmdb_temp") {
 #' This function will launch a background process via `system`
 #' to wait for a given time before locking a keyring.
 #'
-#' @param keyring label of the keyring to lock
+#' @param keyring_label label of the keyring to lock
 #' @param delay wait time (in seconds)
 #'
 lock_keyring_delayed <- function(keyring_label = "mnmdb_temp", delay = 3600) {
@@ -88,7 +88,7 @@ lock_keyring_delayed <- function(keyring_label = "mnmdb_temp", delay = 3600) {
 #' This function will unlock a given keyring, but immediately schedule
 #' locking for later.
 #'
-#' @param keyring label of the keyring to lock
+#' @param keyring_label label of the keyring to lock
 #' @param ... additional parameters for `keyring::keyring_unlock()`
 #'
 unlock_keyring <- function(keyring_label = "mnmdb_temp", ...) {
@@ -96,7 +96,7 @@ unlock_keyring <- function(keyring_label = "mnmdb_temp", ...) {
   require_pkgs(c("keyring"), quietly = TRUE)
 
   if (isFALSE(keyring_label %in% keyring::keyring_list()$keyring)) {
-    init_keyring(keyring_label)
+    init_keyring(keyring_label = keyring_label)
   }
 
 
@@ -117,7 +117,7 @@ unlock_keyring <- function(keyring_label = "mnmdb_temp", ...) {
 #' This function will initialize a keyring (unless it already exists)
 #' and unlock it for temporary use.
 #'
-#' @param keyring label of the keyring to lock; default is "mnmdb_temp"
+#' @param keyring_label label of the keyring to lock; default is "mnmdb_temp"
 #'
 init_keyring <- function(keyring_label = "mnmdb_temp") {
 
@@ -140,7 +140,7 @@ init_keyring <- function(keyring_label = "mnmdb_temp") {
   # This will launch a scheduled process to empty the keyring upon session end.
   reg.finalizer(
     .GlobalEnv,
-    function(e) terminate_keyring(keyring = keyring_label),
+    function(e) terminate_keyring(keyring_label = keyring_label),
     onexit = TRUE
   )
 
@@ -157,7 +157,7 @@ init_keyring <- function(keyring_label = "mnmdb_temp") {
 #' store the password to the mnmdb credential keyring
 #' with function arguments to `keyring::key_set_with_value`
 #'
-#' @param keyring label of the keyring to lock
+#' @param keyring_label label of the keyring to lock
 #' @param service "service" identifier of the keyring
 #' @param username "username" who holds the key
 #' @param password password (NULL to query one)

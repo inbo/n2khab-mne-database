@@ -7,7 +7,7 @@
 terminate_keyring(keyring_label = "mnmdb_temp")
 }
 \arguments{
-\item{keyring}{keyring label to empty (do not use \code{Login}!)}
+\item{keyring_label}{keyring label to empty (do not use \code{Login}!)}
 }
 \description{
 This function will loop through all labels in a given keyring,

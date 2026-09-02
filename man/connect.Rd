@@ -2,10 +2,24 @@
 % Please edit documentation in R/mnmdbConnection.R
 \name{connect}
 \alias{connect}
+\alias{connect,mnmdb::mnmdbConnection-method}
 \title{generic method for database connection}
 \usage{
 connect(conn, ...)
+
+## S7 method for class <mnmdb::mnmdbConnection>
+connect(conn)
+}
+\arguments{
+\item{conn}{a connection to be connected}
+
+\item{...}{Not used.}
+}
+\value{
+mnmdbConnection with active connection
 }
 \description{
-generic method for database connection
+Establishing connection to a predefined postgreSQL server
+The function can be used in a pipe:
+it receives and returns a mnmdbConnection.
 }

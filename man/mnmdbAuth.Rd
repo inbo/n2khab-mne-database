@@ -7,6 +7,8 @@
 mnmdbAuth(...)
 }
 \arguments{
+\item{...}{not used (consturctor)}
+
 \item{host}{the host address (IP or url); default '127.0.0.1'}
 
 \item{port}{on which the host listens for input; default '5432'}
@@ -19,8 +21,6 @@ mnmdbAuth(...)
 will be prompted if no password is provided by the user}
 
 \item{connect_passwordless}{option to connect without password via .pgpass}
-
-\item{keyring_label}{(optional) select a keyring to store credentials}
 }
 \description{
 Manage authentification storage for connections to mnm databases.
