@@ -125,4 +125,19 @@ However, the next purpose of this package is to facilitate data queries (work in
 
 ## Simplified Data Access
 
-tbd.
+This package ships convenience functions to quickly access data from the MNM databases.
+
+The most basic / important one would be `query_table`:
+
+```r
+mnmdbconn |> query_table(
+    DBI::Id("test", "mtcars"),
+    subselect = c("mpg", "cyl", "disp", "hp")
+  )  %>%
+  head(5) %>%
+  knitr::kable()
+
+```
+
+
+This will work equally well for Views (given that you know the schema in which they are defined).
