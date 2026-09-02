@@ -2,6 +2,18 @@
 
 This package facilitates connection to MNE (Monitoring Programme for the Natural Environment; NL: "Meetnetten Natuurlijk Milieu") databases.
 
+Currently, those databases are not publicly available. 
+The purpose of this package is to help colleagues connect to our servers and access the data, while preventing the exposure of credentials.
+
+
+# WARNING: Under Construction
+
+This package is a quick solution to help colleagues connect to databases and query data which were gathered in the broad scope of the MNE project ([broad context](https://github.com/inbo/n2khab-monitoring)).
+
+It is work in progress, yet to be reviewed and tested.
+
+In the future, it might be complementary to the tools already used in [`inbo/n2khab-mne-monitoring`](https://github.com/inbo/n2khab-mne-monitoring/tree/db_tooldev).
+
 
 # Installation
 
@@ -9,3 +21,89 @@ This package facilitates connection to MNE (Monitoring Programme for the Natural
 # install.packages("remotes")
 remotes::install_github("inbo/n2khab-mne-database", ref = "HEAD")
 ```
+
+Please note that the repository is called `n2khab-mne-database`, whereas the R package loads under the name `mnmdb`.
+
+
+# Usage
+
+## Authentication Management
+
+The main convenience of this database connector, and a major difference from [`inbo/inbodb`](https://github.com/inbo/inbodb), is the management of authentication and connection profiles. 
+There are different ways to store authentication.
+
+```r
+library("mnmdb")
+```
+
+The naïve option (and still a valid fallback) is the direct hard-coding of connection parameters.
+
+```r
+auth <- mnmdb::mnmdbAuth(
+  host = "127.0.0.1",
+  port = "5432",
+  user = "guest",
+  # connect_passwordless = TRUE, # for use of a `.pgpass` file
+  password = "abc123", # please do not store passwords like this!
+  database = "sandbox"
+)
+```
+
+Some of these parameters can be omitted and are replaced by defaults (e.g. `port`), though explicit user input takes precedence.
+
+The password will be stored in the system keyring via R's [`keyring` package](https://keyring.r-lib.org/index.html) ([tutorial](https://tutorials.inbo.be/tutorials/r_keyring/)); if no password is provided, it will be prompted.
+
+
+More convenient for handling connections to multiple databases will be storage of config files.
+Examples can be found in `/config_files/`; these contain the same connection parameters as above.
+
+```ini
+[testing_empty]
+folder = dbstructure_test
+host = 127.0.0.1
+port = 5432
+database = sandbox
+```
+
+An authentication object can load from these files, optionally supplementing manual arguments to override the conf content.
+
+```r
+auth <- mnmdb::mnmdbAuthConf(
+  config_file = file.path("config_files", "test.conf"),
+  database = "my_database"
+)
+mnmdb::describe(auth)
+```
+
+## Connection
+
+With an `auth` authentication in place, connection is relatively simple.
+
+```r
+# a connection can be initialized and connected in one go
+mnmdb_connection <- mnmdb::mnmdbConnection(auth) |> connect()
+print(mnmdb_connection@is_connected)
+mnmdb::describe(mnmdb_connection)
+```
+
+After connection, the `mnmdb_connection@database_connection` is accessible for direct usage with [`DBI`](https://dbi.r-dbi.org), e.g.
+
+```r
+DBI::dbWriteTable(
+  conn = mnmdb_connection@database_connection,
+  name = DBI::Id("test", "mtcars"),
+  value = mtcars,
+  overwrite = TRUE
+)
+# DBI::dbListTables(mnmdb_connection@database_connection)
+
+test_cars <- dplyr::tbl(mnmdb_connection@database_connection, DBI::Id("test", "mtcars"))
+test_cars |> knitr::kable()
+```
+
+However, the next purpose of this package is to facilitate data queries.
+
+
+## Usage
+
+tbd.

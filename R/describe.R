@@ -9,5 +9,6 @@
 #' @param ... Not used.
 #'
 #' @returns descriptive string
+#' @export
 #'
 describe <- S7::new_generic("describe", "x")

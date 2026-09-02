@@ -83,6 +83,7 @@ S7::method(describe, mnmdbConnection) <- function(x) {
 #' @param ... Not used.
 #'
 #' @returns mnmdbConnection with active connection
+#' @export
 #'
 connect <- S7::new_generic("connect", "conn")
 

@@ -4,7 +4,7 @@ test_auth <- mnmdbAuth(user = "guest", database = "sandbox")
 describe(test_auth)
 
 
-mnmdb_connection <- mnmdbConnection(auth <- test_auth)
+mnmdb_connection <- mnmdbConnection(auth = test_auth)
 describe(mnmdb_connection)
 
 # Yeah. The thing MUST be "pass by value"; "pass by reference" is unavailable.
