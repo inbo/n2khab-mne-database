@@ -1,16 +1,17 @@
 #!usr/bin/env Rscript
 
 auth <- mnmdbAuth(
-  folder = "dbstructure_test",
-  # host = "127.0.0.1",
-  # port = "5432",
-  database = "sandbox",
+  host = "127.0.0.1",
+  port = 5432,
   user = "guest",
-  # password = "abc123"
+  connect_passwordless = TRUE,
+  password = "abc123", # will be ignored
+  database = "sandbox"
 )
 
 describe(auth)
-print(auth@password)
+print(auth@password) # should always be NULL
+print(auth@connect_passwordless)
 
 
 authcfg <- mnmdbAuthConf(
@@ -19,10 +20,10 @@ authcfg <- mnmdbAuthConf(
 
 describe(authcfg)
 S7::S7_class(authcfg)
-print(authcfg@password)
+print(authcfg@password) # should always be NULL
+print(auth@connect_passwordless)
 
 mnmdbConnection(auth = authcfg)
-
 
 
 # TODO test integer port

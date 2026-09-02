@@ -158,18 +158,29 @@ store_db_password <- function(
 
   require_pkgs(c("glue", "keyring", "getPass"), quietly = TRUE)
 
-  # ensure keyring is unlocked
+  creds <- list(...)
+
+  # initialize the keyring if it does not exist yet
+  if (isFALSE(keyring_label %in% keyring::keyring_list()$keyring)) {
+    init_keyring(keyring_label)
+  }
+
+  # ad-hoc function to prompt a password and unlock keyring
   ask_password <- function() {
-    pw_prompt <- getPass::getPass(glue::glue("Password, please ({describe(auth)}): "))
+    pw_prompt <- getPass::getPass(glue::glue(
+      "Password, please ({creds$service} for {creds$username} in {keyring_label}): "
+    ))
+    # ensure keyring is unlocked *after* user input, just prior to pw storage
     if (keyring::keyring_is_locked(keyring_label)) unlock_keyring(keyring_label = keyring_label)
     return(invisible(pw_prompt))
   }
 
+  # finally, set the value in keyring
   keyring::key_set_with_value(
     keyring = keyring_label,
     ...,
-    password = ask_password()
-    )
+    password = if (is.null(password)) ask_password() else password
+  )
 
   return(invisible(NULL))
 } # /store_db_password

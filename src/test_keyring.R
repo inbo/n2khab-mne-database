@@ -1,23 +1,27 @@
 #!usr/bin/env Rscript
 
 # use the `seahorse` util to double check
+keyring_label <- "mnmdb_temp"
+if (!(keyring_label %in% keyring::keyring_list()$keyring)) {
+  init_keyring(keyring_label)
+}
+terminate_keyring(keyring_label)
 
-init_keyring("mnmdb_temp")
-terminate_keyring("mnmdb_temp")
+lock_keyring_delayed(keyring_label = keyring_label, delay = 5)
 
-lock_keyring_delayed(keyring_label = "mnmdb_temp", delay = 5)
-
-unlock_keyring("mnmdb_temp")
+unlock_keyring(keyring_label)
 
 
 
 keyring::key_set_with_value(
   service = "mnmdb_credentials",
   username = "tester",
-  keyring = "mnmdb_temp",
+  keyring = keyring_label,
   password = getPass::getPass("Test password: ")
 )
 
 
 existing <- keyring::key_list(keyring = "mnmdb_temp")
 # existing_user <- existing$username == "tester3"
+
+

@@ -4,15 +4,14 @@
 
 #' Authentication for mnmdb via connection parameters
 #'
-#' manage authentification storage for connections to mnm databases
+#' Manage authentification storage for connections to mnm databases.
+#' In particular, the password is stored in the system keyring, and
+#' never leaves the constructor function.
 #'
-#' @details tbd
-#'
-#' @param folder the structure folder with csv files for all tables
-#' @param host the host (IP address or url); default '127.0.0.1'
+#' @param host the host address (IP or url); default '127.0.0.1'
 #' @param port on which the host listens for input; default '5432'
-#' @param database name of the database to access
-#' @param user username to get connected
+#' @param database name of the database to access (mandatory)
+#' @param user username to get connected (mandatory)
 #' @param password (optional) password to connect;
 #'            will be prompted if no password is provided by the user
 #' @param connect_passwordless option to connect without password via .pgpass
@@ -20,19 +19,29 @@
 #'
 #' @examples
 #' \dontrun{
-#'   auth <- mnmdb::mnmdbAuth(file.path("config_files", "test.conf"))
+#'   auth <- mnmdb::mnmdbAuth(
+#'     user = "guest",
+#'     database = "sandbox",
+#'     connect_passwordless = True # optional for use of `~/.pgpass`
+#'   )
+#'   auth <- mnmdbAuth(
+#'     host = "127.0.0.1",
+#'     port = "5432",
+#'     user = "guest",
+#'     password = "abc123", # avoid and do not share plaintext passwords!
+#'     database = "sandbox"
+#'   )
 #' }
 #'
 mnmdbAuth <- S7::new_class(
   name = "mnmdbAuth",
   properties = list(
-    folder = S7::class_character,
     host = S7::new_property(
       class = S7::class_character | NULL,
       default = "127.0.0.1"
     ),
     port = S7::new_property(
-      class = S7::class_integer | S7::class_character | NULL,
+      class = S7::class_numeric | S7::class_character | NULL,
       default = "5432"
     ),
     database = S7::class_character,
@@ -42,7 +51,7 @@ mnmdbAuth <- S7::new_class(
       default = NULL
     ),
     connect_passwordless = S7::new_property(
-      class = S7::class_logical,
+      class = S7::class_logical | NULL,
       default = FALSE
     ),
     keyring_label = S7::new_property(
@@ -53,12 +62,20 @@ mnmdbAuth <- S7::new_class(
   constructor = function(...) {
     # highest precedence: user input
     params <- list(...)
-    params[["connect_passwordless"]] <- FALSE
 
+    # some arguments are mandatory
     if (is.null(params$user)) {
       stop(
-        "No database user provided. Please authenticate as a valid mnmdb user via `user = `."
+        "No user provided. Please authenticate as a valid MNE database user via `user = `."
       )
+    }
+    if (is.null(params$database)) {
+      stop(
+        "No database user provided. Please provide the database via the `database = ` argument."
+      )
+    }
+    if (is.integer(params$port)) {
+      params$port <- as.character(params$port)
     }
 
     # overwrite default parameters (for those not given by user)
@@ -71,12 +88,17 @@ mnmdbAuth <- S7::new_class(
     ## password and keyring
     # if no password is provided, prompt one
     if (is.null(params[["password"]])) {
-      existing <- keyring::key_list(keyring = params$keyring_label)
-      existing_service <- existing$service == "mnmdb_credentials"
-      existing_user <- existing$username == params$user
+      password_exists <- FALSE
 
-      password_exists <- sum(existing_service & existing_user) > 0
-      message("Password exists.")
+      if (params$keyring_label %in% keyring::keyring_list()$keyring) {
+        existing <- keyring::key_list(keyring = params$keyring_label)
+        existing_service <- existing$service == "mnmdb_credentials"
+        existing_user <- existing$username == params$user
+
+        password_exists <- sum(existing_service & existing_user) > 0
+        # message("Password exists.")
+      }
+
     }
 
     # write password to keyring
@@ -91,11 +113,13 @@ mnmdbAuth <- S7::new_class(
 
     # remove password so that it does not retain in memory
     params[["password"]] <- NULL
-    print(params)
+
+    # enforce data type of non-character params
+    params[["connect_passwordless"]] <- as.logical(params$connect_passwordless)
+    # print(params)
 
     return(
       S7::new_object(`mnmdbAuth`,
-        folder = params$folder,
         host = params$host,
         port = params$port,
         database = params$database,
@@ -111,11 +135,11 @@ mnmdbAuth <- S7::new_class(
 )
 
 
-# require_pkgs(c("configr"), quietly = TRUE)
-# MNMDatabaseConnection.R // connect_database_configfile
-# config <- configr::read.config(file = config_filepath)[[1]]
 
 #' Authentication for mnmdb via config file
+#'
+#' Just as `mnmdbAuth`, but with the extra option to store authentication parameters
+#' in a config file (e.g. in the `config_files` folder).
 #'
 #' @inheritParams mnmdbAuth
 #'
@@ -133,34 +157,83 @@ mnmdbAuthConf <- S7::new_class(
     config_file = S7::class_character
   ),
   constructor = function(config_file, ...) {
-    # TODO set defaults, overwrite by config, overwrite by user input
+    # fallback 0: user input
+    # fallback 1: config file
+    # fallback 2: defaults
+
+    # highest precedence: user input
     params <- list(...)
 
+    # if user does not provide input, check config
+    config_params <- configr::read.config(file = config_file)[[1]]
+    for (p in names(config_params)) {
+      if (is.null(params[[p]])) {
+        params[[p]] <- config_params[[p]]
+      }
+    }
+
+    # some arguments are mandatory
+    if (is.null(params$user)) {
+      stop(
+        "No user provided. Please authenticate as a valid MNE database user via `user = `."
+      )
+    }
+    if (is.null(params$database)) {
+      stop(
+        "No database user provided. Please provide the database via the `database = ` argument."
+      )
+    }
+    if (is.integer(params$port)) {
+      params$port <- as.character(params$port)
+    }
+
+    # overwrite default parameters (for those not given by user)
     for (p in names(auth_parameter_defaults)) {
-      print(p)
-      print(params[[p]])
-      print(defaults[[p]])
       if (is.null(params[[p]])) {
         params[[p]] <- auth_parameter_defaults[[p]]
       }
     }
 
-    print(params)
+    ## password and keyring
+    # if no password is provided, prompt one
+    if (is.null(params[["password"]])) {
+      password_exists <- FALSE
 
+      if (params$keyring_label %in% keyring::keyring_list()$keyring) {
+        existing <- keyring::key_list(keyring = params$keyring_label)
+        existing_service <- existing$service == "mnmdb_credentials"
+        existing_user <- existing$username == params$user
 
-    # TODO store password to keyring
+        password_exists <- sum(existing_service & existing_user) > 0
+        # message("Password exists.")
+      }
+
+    }
+
+    # write password to keyring
+    if (isFALSE(is.null(params[["password"]])) || isFALSE(password_exists)) {
+      store_db_password(
+        params$keyring_label,
+        service = "mnmdb_credentials",
+        username = params$user,
+        password = params$password
+      )
+    }
+
 
     # remove password so that it does not retain in memory
     params[["password"]] <- NULL
 
+    # enforce data type of non-character params
+    params[["connect_passwordless"]] <- as.logical(params$connect_passwordless)
+
     return(
       S7::new_object(`mnmdbAuthConf`,
         config_file = config_file,
-        folder = ".", #params$folder,
-        host = "127.0.0.1", #params$host,
-        port = "5432", #params$port,
-        database = "sandbox", #params$database,
-        user = "user", #params$user,
+        host = params$host,
+        port = params$port,
+        database = params$database,
+        user = params$user,
         password = NULL
       )
     )
@@ -189,10 +262,13 @@ S7::method(describe, mnmdbAuth) <- function(auth) {
 }
 
 
+
 #_______________________________________________________________________________
 # default parameters
+# NOTE: non-character data types must be enforced in the constructors
 auth_parameter_defaults <- c(
   "host" = "127.0.0.1",
   "port" = "5432",
-  "keyring_label" = "mnmdb_temp"
+  "keyring_label" = "mnmdb_temp",
+  "connect_passwordless" = FALSE
 )
