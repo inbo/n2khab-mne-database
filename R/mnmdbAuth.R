@@ -25,7 +25,7 @@
 #'   auth <- mnmdb::mnmdbAuth(
 #'     user = "guest",
 #'     database = "sandbox",
-#'     connect_passwordless = True # optional for use of `~/.pgpass`
+#'     connect_passwordless = TRUE # optional for use of `~/.pgpass`
 #'   )
 #'   auth <- mnmdbAuth(
 #'     host = "127.0.0.1",
@@ -123,7 +123,7 @@ mnmdbAuth <- S7::new_class(
     params[["password"]] <- NULL
 
     # enforce data type of non-character params
-    params[["connect_passwordless"]] <- as.logical(params$connect_passwordless)
+    params$connect_passwordless <- as.logical(params$connect_passwordless)
     # print(params)
 
     return(
@@ -235,7 +235,7 @@ mnmdbAuthConf <- S7::new_class(
     params[["password"]] <- NULL
 
     # enforce data type of non-character params
-    params[["connect_passwordless"]] <- as.logical(params$connect_passwordless)
+    params$connect_passwordless <- as.logical(params$connect_passwordless)
 
     return(
       S7::new_object(`mnmdbAuthConf`,
@@ -244,6 +244,7 @@ mnmdbAuthConf <- S7::new_class(
         port = params$port,
         database = params$database,
         user = params$user,
+        connect_passwordless = params$connect_passwordless,
         password = NULL
       )
     )
