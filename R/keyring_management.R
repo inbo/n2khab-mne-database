@@ -1,5 +1,9 @@
 #!usr/bin/env Rscript
 
+# This file contains various functions to interact with the system keyring.
+# (Works well on Linux.)
+
+
 #' terminate and clean up a given keyring
 #'
 #' This function will loop through all labels in a given keyring,

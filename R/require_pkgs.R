@@ -1,5 +1,9 @@
 #!usr/bin/env Rscript
 
+# Do you actually know all the packages your R library actually contains? 
+# The friendly little R librarian below does.
+
+
 #' Check availability of required packages
 #'
 #' Takes a vector of package names and passes each name to

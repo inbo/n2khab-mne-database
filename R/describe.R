@@ -1,5 +1,9 @@
 #!usr/bin/env Rscript
 
+# Sometimes, we lack words to describe what we code.
+# This is most licely caused by a bug in the generic below.
+
+
 #' generic for description of mnmdb objects
 #'
 #' @description

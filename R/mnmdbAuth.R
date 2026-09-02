@@ -1,6 +1,9 @@
 #!usr/bin/env Rscript
 
-# this file contains the mnmdb authentication object.
+# This file contains the mnmdb authentication object.
+# It handles credentials from user input, configs, or 
+# default settings.
+
 
 #' Authentication for mnmdb via connection parameters
 #'

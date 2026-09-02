@@ -1,6 +1,6 @@
 #!usr/bin/env Rscript
 
-# Basic functionality to query a single table from an mnmdb.
+# Behold, basic functionality to query a single table from a MNM database.
 
 
 #' Query tables from MNE databases.
