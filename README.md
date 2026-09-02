@@ -81,23 +81,27 @@ With an `auth` authentication in place, connection is relatively simple.
 
 ```r
 # a connection can be initialized and connected in one go
-mnmdb_connection <- mnmdb::mnmdbConnection(auth) |> connect()
-print(mnmdb_connection@is_connected)
-mnmdb::describe(mnmdb_connection)
+mnmdbconn <- mnmdb::mnmdbConnection(
+    auth = mnmdb::mnmdbAuth(user = "guest", database = "sandbox")
+  ) |> 
+  mnmdb::connect()
+
+print(mnmdbconn@is_connected)
+mnmdb::describe(mnmdbconn)
 ```
 
-After connection, the `mnmdb_connection@database_connection` is accessible for direct usage with [`DBI`](https://dbi.r-dbi.org), e.g.
+After connection, the `mnmdbconn@database_connection` is accessible for direct usage with [`DBI`](https://dbi.r-dbi.org), e.g.
 
 ```r
 DBI::dbWriteTable(
-  conn = mnmdb_connection@database_connection,
+  conn = mnmdbconn@database_connection,
   name = DBI::Id("test", "mtcars"),
   value = mtcars,
   overwrite = TRUE
 )
-# DBI::dbListTables(mnmdb_connection@database_connection)
+# DBI::dbListTables(mnmdbconn@database_connection)
 
-test_cars <- dplyr::tbl(mnmdb_connection@database_connection, DBI::Id("test", "mtcars"))
+test_cars <- dplyr::tbl(mnmdbconn@database_connection, DBI::Id("test", "mtcars"))
 test_cars |> knitr::kable()
 ```
 

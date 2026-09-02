@@ -148,6 +148,12 @@ S7::method(connect, mnmdbConnection) <- function(conn) {
     message(wrnmsg)
   })
 
+  # occasionally, connection fails (e.g. if database inexistent)
+  if (is.null(database_connection)) {
+    message("Connection was unsuccessful!")
+    return(invisible(conn))
+  }
+
   # register disconnect for finalization
   # https://stackoverflow.com/a/41179916
   reg.finalizer(
