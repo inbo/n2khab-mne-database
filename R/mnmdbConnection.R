@@ -26,7 +26,8 @@ mnmdbConnection <- S7::new_class(
   name = "mnmdbConnection",
   properties = list(
     auth = S7::new_property(S7::class_any, default = NULL),
-    database_connection = S7::new_property(S7::class_any, default = NULL)
+    database_connection = S7::new_property(S7::class_any, default = NULL),
+    is_connected = S7::new_property(S7::class_logical, default = FALSE)
   ),
   validator = function(self) {
     if (
@@ -38,10 +39,44 @@ mnmdbConnection <- S7::new_class(
   }
 )
 
+#' description of database connection
+S7::method(describe, mnmdbConnection) <- function(x) {
+  # unwrap
+  conn <- x
+  auth <- conn@auth
+
+  connected <- if (conn@is_connected) "(connected)" else "(not connected)"
+  paste0(
+    "Database connection to ",
+    auth@user, " @ ",
+    auth@host, ":", auth@port,
+    " -d ", auth@database,
+    " ", connected
+  )
+
+}
 
 
+#' generic method for database connection
 connect <- S7::new_generic("connect", "conn")
+
+#' Connect a mnmdbConnection object to the actual database using `auth`.
+#'
+#' @details This function can be used in a pipe:
+#'          it receives and returns a mnmdbConnection.
+#'
+#' @param conn a mnmdbConnection connection to be connected
+#' @returns mnmdbConnection
+#'
 S7::method(connect, mnmdbConnection) <- function(conn) {
+
+
+  # shortcut for the already connected
+  if (isFALSE(is.null(conn@database_connection))) {
+    if (DBI::dbIsValid(database_connection)) {
+      return(conn)
+    }
+  }
 
   auth <- conn@auth # shortcut
 

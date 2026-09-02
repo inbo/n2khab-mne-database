@@ -2,10 +2,10 @@
 % Please edit documentation in R/mnmdbAuth.R
 \name{describe}
 \alias{describe}
-\title{generic for description of database auth}
+\title{generic for description of mnmdb objects}
 \usage{
-describe(auth, ...)
+describe(x, ...)
 }
 \description{
-generic for description of database auth
+generic for description of mnmdb objects
 }

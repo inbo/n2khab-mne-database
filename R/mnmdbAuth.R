@@ -254,10 +254,14 @@ mnmdbAuthConf <- S7::new_class(
 # props(x) <- list(name1 = val1, name2 = val2) modifies an existing object by setting multiple properties simultaneously.
 
 
-#' generic for description of database auth
-describe <- S7::new_generic("describe", "auth")
-S7::method(describe, mnmdbAuth) <- function(auth) {
+#' generic for description of mnmdb objects
+describe <- S7::new_generic("describe", "x")
+
+#' description of database auth
+S7::method(describe, mnmdbAuth) <- function(x) {
+  auth <- x
   paste0(
+    "Authentication for ",
     auth@user, " @ ",
     auth@host, ":", auth@port,
     " -d ", auth@database

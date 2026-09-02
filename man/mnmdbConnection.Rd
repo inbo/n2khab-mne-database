@@ -4,7 +4,7 @@
 \alias{mnmdbConnection}
 \title{MNE Database Connection Object.}
 \usage{
-mnmdbConnection(auth = NULL, database_connection = NULL)
+mnmdbConnection(auth = NULL, database_connection = NULL, is_connected = FALSE)
 }
 \arguments{
 \item{auth}{an mnmdbAuth object which stores authentication}
