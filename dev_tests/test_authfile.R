@@ -12,7 +12,7 @@ auth <- mnmdbAuth(
 describe(auth)
 print(auth@password) # should always be NULL
 print(auth@connect_passwordless)
-
+print(S7::prop_exists(auth, "config_file"))
 
 authcfg <- mnmdbAuthConf(
   config_file = file.path("config_files", "test.conf")

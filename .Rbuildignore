@@ -1,3 +1,4 @@
 ^LICENSE\.md$
 ^config_files
+^dev_tests
 ^dbstructure_*

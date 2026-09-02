@@ -25,3 +25,4 @@ DBI::dbWriteTable(
 
 test_cars <- dplyr::tbl(mnmdb_connection@database_connection, DBI::Id("test", "mtcars"))
 test_cars |> knitr::kable()
+

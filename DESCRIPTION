@@ -10,8 +10,10 @@ License: CC BY 4.0
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 Imports: 
+    assertthat,
     configr,
     DBI,
+    getPass,
     glue,
     keyring,
     S7
