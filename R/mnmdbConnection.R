@@ -11,6 +11,7 @@
 #'
 #' @param auth an mnmdbAuth object which stores authentication
 #' @param database_connection will store the connection to an mnmdb
+#'        (after `mnmdb::connect()` was applied).
 #'
 #' @examples
 #' \dontrun{
@@ -75,7 +76,7 @@ S7::method(describe, mnmdbConnection) <- function(x) {
 #' generic method for database connection
 #'
 #' @description
-#' Establishing connection to a predefined postgreSQL server
+#' Establishing connection to a predefined postgreSQL server.
 #' The function can be used in a pipe:
 #' it receives and returns a mnmdbConnection.
 #'

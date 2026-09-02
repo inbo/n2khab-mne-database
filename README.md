@@ -141,3 +141,19 @@ mnmdbconn |> query_table(
 
 
 This will work equally well for Views (given that you know the schema in which they are defined).
+
+
+## Documentation
+
+We try to document all functions extensively (guided by <https://roxygen2.r-lib.org/articles/rd-S7.html>). 
+
+You might find the hint you were looking for in the documentation in R:
+
+``` r
+?mnmdb::mnmdbAuthConf
+?mnmdb::mnmdbConnection
+?mnmdb::connect
+?mnmdb::query_table
+```
+
+

@@ -19,7 +19,7 @@ connect(conn)
 mnmdbConnection with active connection
 }
 \description{
-Establishing connection to a predefined postgreSQL server
+Establishing connection to a predefined postgreSQL server.
 The function can be used in a pipe:
 it receives and returns a mnmdbConnection.
 }

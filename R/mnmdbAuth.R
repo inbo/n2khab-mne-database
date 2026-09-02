@@ -151,7 +151,8 @@ mnmdbAuth <- S7::new_class(
 #'
 #' @examples
 #' \dontrun{
-#'   auth <- mnmdb::mnmdbAuth(file.path("config_files", "test.conf"))
+#'   auth <- mnmdb::mnmdbAuthConf(file.path("config_files", "test.conf"))
+#'   describe(auth)
 #' }
 #'
 #' @export

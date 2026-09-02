@@ -9,7 +9,8 @@ mnmdbConnection(auth = NULL, database_connection = NULL)
 \arguments{
 \item{auth}{an mnmdbAuth object which stores authentication}
 
-\item{database_connection}{will store the connection to an mnmdb}
+\item{database_connection}{will store the connection to an mnmdb
+(after \code{mnmdb::connect()} was applied).}
 }
 \description{
 Given an authentication for login, this database object is supposed

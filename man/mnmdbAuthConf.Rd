@@ -17,7 +17,8 @@ in a config file (e.g. in the \code{config_files} folder).
 }
 \examples{
 \dontrun{
-  auth <- mnmdb::mnmdbAuth(file.path("config_files", "test.conf"))
+  auth <- mnmdb::mnmdbAuthConf(file.path("config_files", "test.conf"))
+  describe(auth)
 }
 
 }

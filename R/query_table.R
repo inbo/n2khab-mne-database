@@ -7,6 +7,7 @@
 #'
 #' @description
 #' This function enables direct query of data from MNE databases.
+#' The `subselect` arg can be used to query only a subset of fields.
 #'
 #' @param conn the mnmdb connection
 #' @param table_id the `DBI::Id` of a table
