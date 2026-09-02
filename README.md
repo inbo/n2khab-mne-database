@@ -103,11 +103,26 @@ DBI::dbWriteTable(
 
 test_cars <- dplyr::tbl(mnmdbconn@database_connection, DBI::Id("test", "mtcars"))
 test_cars |> knitr::kable()
+
+
 ```
 
-However, the next purpose of this package is to facilitate data queries.
+This "raw usage" is currently the only way to retrieve spatial information.
+
+```r
+data <- sf::st_read(
+    mnmdbconn@database_connection,
+    layer = DBI::Id("inbound", "Locations"),
+    geometry_column = "wkb_geometry"
+  ) %>%
+  dplyr::select(-ogc_fid) %>%
+  sf::st_as_sf(crs = 31370)
+```
 
 
-## Usage
+However, the next purpose of this package is to facilitate data queries (work in progress).
+
+
+## Simplified Data Access
 
 tbd.
