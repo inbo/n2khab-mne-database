@@ -10,6 +10,8 @@ describe(mnmdb_connection)
 # Yeah. The thing MUST be "pass by value"; "pass by reference" is unavailable.
 mnmdb_connection <- mnmdb_connection |> connect()
 
+S7::S7_class(mnmdb_connection)
+
 # DBI::dbDisconnect(mnmdb_connection@database_connection)
 print(DBI::dbIsValid(mnmdb_connection@database_connection))
 

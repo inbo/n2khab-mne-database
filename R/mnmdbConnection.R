@@ -27,7 +27,14 @@ mnmdbConnection <- S7::new_class(
   properties = list(
     auth = S7::new_property(S7::class_any, default = NULL),
     database_connection = S7::new_property(S7::class_any, default = NULL),
-    is_connected = S7::new_property(S7::class_logical, default = FALSE)
+    is_connected = S7::new_property(
+      getter = function(self) {
+        isFALSE(is.null(self@database_connection)) &&
+          DBI::dbIsValid(self@database_connection)
+      },
+      default = FALSE
+  # S7::new_property(S7::class_logical, default = FALSE)
+    )
   ),
   validator = function(self) {
     if (
