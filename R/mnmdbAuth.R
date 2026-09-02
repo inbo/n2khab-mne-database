@@ -150,6 +150,8 @@ mnmdbAuth <- S7::new_class(
 #' in a config file (e.g. in the `config_files` folder).
 #'
 #' @param config_file file.path to a config file to load with `configr`
+#' @param config_profile (optional) number or name of the
+#'        parameter block in `.conf` file (if there are multiple)
 #' @param ... not used (consturctor)
 #'
 #' @examples
@@ -164,7 +166,11 @@ mnmdbAuthConf <- S7::new_class(
   name = "mnmdbAuthConf",
   parent = mnmdbAuth,
   properties = list(
-    config_file = S7::class_character
+    config_file = S7::class_character,
+    connection_profile = S7::new_property(
+      class = S7::class_numeric | S7::class_character | NULL,
+      default = 1
+    )
   ),
   constructor = function(config_file, ...) {
     # fallback 0: user input
@@ -175,7 +181,9 @@ mnmdbAuthConf <- S7::new_class(
     params <- list(...)
 
     # if user does not provide input, check config
-    config_params <- configr::read.config(file = config_file)[[1]]
+    config_params <- configr::read.config(file = config_file)[[
+      params$connection_profile
+    ]]
     for (p in names(config_params)) {
       if (is.null(params[[p]])) {
         params[[p]] <- config_params[[p]]
@@ -240,6 +248,7 @@ mnmdbAuthConf <- S7::new_class(
     return(
       S7::new_object(`mnmdbAuthConf`,
         config_file = config_file,
+        connection_profile = params$connection_profile,
         host = params$host,
         port = params$port,
         database = params$database,

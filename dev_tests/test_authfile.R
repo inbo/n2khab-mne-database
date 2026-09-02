@@ -15,7 +15,8 @@ print(auth@connect_passwordless)
 print(S7::prop_exists(auth, "config_file"))
 
 authcfg <- mnmdbAuthConf(
-  config_file = file.path("config_files", "test.conf")
+  config_file = file.path("config_files", "test.conf"),
+  connection_profile = "testing"
 )
 
 describe(authcfg)
