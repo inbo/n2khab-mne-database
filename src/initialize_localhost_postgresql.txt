@@ -11,6 +11,7 @@ createdb sandbox
 
 psql sandbox
 CREATE USER guest WITH ENCRYPTED PASSWORD 'abc123';
+CREATE SCHEMA test AUTHORIZATION guest;
 exit
 
 # (as root)

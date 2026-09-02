@@ -17,6 +17,11 @@ terminate_keyring <- function(keyring_label = "mnmdb_temp") {
     stop("The `Login` keyring should not be deleted or emptied.")
   }
 
+  # only empty if keyring still exists
+  if (isFALSE(keyring_label %in% keyring::keyring_list()$keyring)) {
+    return(invisible(NULL))
+  }
+
   # repeatedly execute
   while (keyring_label %in% keyring::keyring_list()$keyring) {
     # find all keys
@@ -89,6 +94,13 @@ lock_keyring_delayed <- function(keyring_label = "mnmdb_temp", delay = 3600) {
 unlock_keyring <- function(keyring_label = "mnmdb_temp", ...) {
 
   require_pkgs(c("keyring"), quietly = TRUE)
+
+  if (isFALSE(keyring_label %in% keyring::keyring_list()$keyring)) {
+    init_keyring(keyring_label)
+  }
+
+
+  if (isFALSE(keyring::keyring_is_locked(keyring_label))) return(invisible(NULL))
 
   # unlock the keyring
   keyring::keyring_unlock(keyring = keyring_label, ...)
@@ -172,13 +184,13 @@ store_db_password <- function(
     ))
     # ensure keyring is unlocked *after* user input, just prior to pw storage
     # (user might take their time)
-    if (keyring::keyring_is_locked(keyring_label)) unlock_keyring(keyring_label = keyring_label)
+    unlock_keyring(keyring_label = keyring_label)
     return(invisible(pw_prompt))
   }
 
   # also unlock keyring if password is provided directly
   if (isFALSE(is.null(password))) {
-    if (keyring::keyring_is_locked(keyring_label)) unlock_keyring(keyring_label = keyring_label)
+    unlock_keyring(keyring_label = keyring_label)
   }
 
   # finally, set the value in keyring
