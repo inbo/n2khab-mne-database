@@ -10,7 +10,8 @@ mnmdbAuthConf(config_file, ...)
 \item{config_file}{file.path to a config file to load with \code{configr}}
 }
 \description{
-Authentication for mnmdb via config file
+Just as \code{mnmdbAuth}, but with the extra option to store authentication parameters
+in a config file (e.g. in the \code{config_files} folder).
 }
 \examples{
 \dontrun{

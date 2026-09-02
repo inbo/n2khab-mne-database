@@ -7,15 +7,13 @@
 mnmdbAuth(...)
 }
 \arguments{
-\item{folder}{the structure folder with csv files for all tables}
-
-\item{host}{the host (IP address or url); default '127.0.0.1'}
+\item{host}{the host address (IP or url); default '127.0.0.1'}
 
 \item{port}{on which the host listens for input; default '5432'}
 
-\item{database}{name of the database to access}
+\item{database}{name of the database to access (mandatory)}
 
-\item{user}{username to get connected}
+\item{user}{username to get connected (mandatory)}
 
 \item{password}{(optional) password to connect;
 will be prompted if no password is provided by the user}
@@ -25,14 +23,24 @@ will be prompted if no password is provided by the user}
 \item{keyring_label}{(optional) select a keyring to store credentials}
 }
 \description{
-manage authentification storage for connections to mnm databases
-}
-\details{
-tbd
+Manage authentification storage for connections to mnm databases.
+In particular, the password is stored in the system keyring, and
+never leaves the constructor function.
 }
 \examples{
 \dontrun{
-  auth <- mnmdb::mnmdbAuth(file.path("config_files", "test.conf"))
+  auth <- mnmdb::mnmdbAuth(
+    user = "guest",
+    database = "sandbox",
+    connect_passwordless = True # optional for use of `~/.pgpass`
+  )
+  auth <- mnmdbAuth(
+    host = "127.0.0.1",
+    port = "5432",
+    user = "guest",
+    password = "abc123", # avoid and do not share plaintext passwords!
+    database = "sandbox"
+  )
 }
 
 }

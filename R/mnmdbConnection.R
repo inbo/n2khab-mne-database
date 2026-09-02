@@ -4,6 +4,24 @@
 # this is the file-to-be.
 
 
+#' MNE Database Connection Object.
+#'
+#' Given an authentication for login, this database object is supposed
+#' to facilitate all interactions with an actual database.
+#'
+#' @param auth an mnmdbAuth object which stores authentication
+#'
+#' @examples
+#' \dontrun{
+#'   test_auth <- mnmdbAuth(
+#'     user = "guest",
+#'     database = "sandbox"
+#'   )
+#'   mnmdbconn <- mnmdbConnection(auth <- test_auth)
+#'   mnmdbconn <- mnmdbconn |> connect()
+#'   # dplyr::tbl(mnmdbconn@database_connection, DBI::Id("test", "mtcars"))
+#' }
+#'
 mnmdbConnection <- S7::new_class(
   name = "mnmdbConnection",
   properties = list(
@@ -32,7 +50,6 @@ S7::method(connect, mnmdbConnection) <- function(conn) {
 
 
   # connect to database
-  #
   tryCatch({
     if (auth@connect_passwordless) {
 
@@ -66,7 +83,7 @@ S7::method(connect, mnmdbConnection) <- function(conn) {
     }
   },
   error = function(wrnmsg) {
-    message(glue::glue('error in connecting {db_label}:'))
+    message(glue::glue("error in connecting {db_label}:"))
     message(wrnmsg)
   })
 
@@ -74,9 +91,14 @@ S7::method(connect, mnmdbConnection) <- function(conn) {
   # https://stackoverflow.com/a/41179916
   reg.finalizer(
     .GlobalEnv,
-    function(e){
-      DBI::dbDisconnect(database_connection)
-      message(sprintf("MNE database connection %s gracefully disconnected.", db_label))
+    function(e) {
+      if (DBI::dbIsValid(database_connection)) {
+        DBI::dbDisconnect(database_connection)
+        message(sprintf(
+          "MNE database connection %s gracefully disconnected.",
+          db_label
+        ))
+      }
     },
     onexit = TRUE
   )
@@ -85,4 +107,4 @@ S7::method(connect, mnmdbConnection) <- function(conn) {
 
   return(invisible(conn))
 
-}
+} # /connect(mnmdbConnection)

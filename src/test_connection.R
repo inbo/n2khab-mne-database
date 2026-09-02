@@ -1,25 +1,22 @@
 #!usr/bin/env Rscript
 
-test_auth <- mnmdbAuth(
-  host = "127.0.0.1",
-  port = "5432",
-  user = "guest",
-  password = "abc123",
-  database = "sandbox"
-)
+test_auth <- mnmdbAuth(user = "guest", database = "sandbox")
 
 
-mnmdb_connection <- mnmdbConnection(
-  auth <- test_auth
-)
+mnmdb_connection <- mnmdbConnection(auth <- test_auth)
+
+# Yeah. The thing MUST be "pass by value"; "pass by reference" is unavailable.
 mnmdb_connection <- mnmdb_connection |> connect()
 
+# DBI::dbDisconnect(mnmdb_connection@database_connection)
+print(DBI::dbIsValid(mnmdb_connection@database_connection))
 
 DBI::dbWriteTable(
   conn = mnmdb_connection@database_connection,
   name = DBI::Id("test", "mtcars"),
   value = mtcars,
-  overwrite = TRUE
+  overwrite = TRUE,
+  temporary = TRUE
 )
 # DBI::dbListTables(mnmdb_connection@database_connection)
 
