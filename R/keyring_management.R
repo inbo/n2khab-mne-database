@@ -171,8 +171,14 @@ store_db_password <- function(
       "Password, please ({creds$service} for {creds$username} in {keyring_label}): "
     ))
     # ensure keyring is unlocked *after* user input, just prior to pw storage
+    # (user might take their time)
     if (keyring::keyring_is_locked(keyring_label)) unlock_keyring(keyring_label = keyring_label)
     return(invisible(pw_prompt))
+  }
+
+  # also unlock keyring if password is provided directly
+  if (isFALSE(is.null(password))) {
+    if (keyring::keyring_is_locked(keyring_label)) unlock_keyring(keyring_label = keyring_label)
   }
 
   # finally, set the value in keyring

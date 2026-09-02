@@ -87,8 +87,8 @@ mnmdbAuth <- S7::new_class(
 
     ## password and keyring
     # if no password is provided, prompt one
+    password_exists <- FALSE
     if (is.null(params[["password"]])) {
-      password_exists <- FALSE
 
       if (params$keyring_label %in% keyring::keyring_list()$keyring) {
         existing <- keyring::key_list(keyring = params$keyring_label)
@@ -102,7 +102,10 @@ mnmdbAuth <- S7::new_class(
     }
 
     # write password to keyring
-    if (isFALSE(is.null(params[["password"]])) || isFALSE(password_exists)) {
+    if (isFALSE(as.logical(params[["connect_passwordless"]]))
+        && (isFALSE(is.null(params[["password"]]))
+        || isFALSE(password_exists))
+      ) {
       store_db_password(
         params$keyring_label,
         service = "mnmdb_credentials",
