@@ -114,8 +114,8 @@ data <- sf::st_read(
     mnmdbconn@database_connection,
     layer = DBI::Id("inbound", "Locations"),
     geometry_column = "wkb_geometry"
-  ) %>%
-  dplyr::select(-ogc_fid) %>%
+  ) |>
+  dplyr::select(-ogc_fid) |>
   sf::st_as_sf(crs = 31370)
 ```
 
@@ -133,8 +133,8 @@ The most basic / important one would be `query_table`:
 mnmdbconn |> query_table(
     DBI::Id("test", "mtcars"),
     subselect = c("mpg", "cyl", "disp", "hp")
-  )  %>%
-  head(5) %>%
+  )  |>
+  head(5) |>
   knitr::kable()
 
 ```
