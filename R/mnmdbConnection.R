@@ -144,9 +144,14 @@ S7::method(connect, mnmdbConnection) <- function(conn) {
       rm(password)
     }
   },
-  error = function(wrnmsg) {
-    message(glue::glue("error in connecting {db_label}:"))
+  warning = function(wrnmsg) {
+    message(glue::glue("Warning in connecting {db_label}:"))
     message(wrnmsg)
+  },
+  error = function(wrnmsg) {
+    message()
+    message(wrnmsg)
+    stop(glue::glue(" ⮤ error in connecting {db_label}."))
   })
 
   # occasionally, connection fails (e.g. if database inexistent)
