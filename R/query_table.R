@@ -36,8 +36,8 @@ S7::method(query_table, mnmdbConnection) <- function(conn, table_id, subselect =
         conn@database_connection,
         layer = table_id,
         geometry_column = "wkb_geometry"
-      ) %>%
-      dplyr::select(-ogc_fid) %>%
+      ) |>
+      dplyr::select(-ogc_fid) |>
       sf::st_as_sf(crs = 31370)
 
     sf::st_geometry(data) <- "wkb_geometry"
@@ -48,25 +48,24 @@ S7::method(query_table, mnmdbConnection) <- function(conn, table_id, subselect =
     data <- dplyr::tbl(
         conn@database_connection,
         table_id
-      ) %>%
+      ) |>
       dplyr::collect()
 
   }
 
-  # data %>% mutate(test =
+  # data |>
   #   unlist_keep_na(purrr::map(log_creation, convert_timestamp_to_ms_character))
-  # ) %>% pull(test)
+  # ) |>
 
 
   if (isFALSE(is.scalar.na(subselect))) {
-    data <- data %>%
+    data <- data |>
       dplyr::select(!!!rlang::syms(subselect))
   }
 
-    # grts_datatype_to_integer() %>%
-    # convert_df_datetime_types_to_character() %>%
-  data %>%
-    dplyr::as_tibble() %>%
-    return()
+    # grts_datatype_to_integer() |>
+    # convert_df_datetime_types_to_character() |>
+  data <- data |> dplyr::as_tibble()
+  return(data)
 
 }
