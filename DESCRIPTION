@@ -20,6 +20,7 @@ Imports:
     glue,
     keyring,
     rlang,
+    RPostgres,
     S7,
     sf
 Suggests: 
