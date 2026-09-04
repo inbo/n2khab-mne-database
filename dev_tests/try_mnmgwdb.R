@@ -1,6 +1,6 @@
 #!usr/bin/env Rscript
 
-# remotes::install_github("inbo/n2khab-mne-database", ref = "oopdb")
+# remotes::install_github("inbo/mnmdb", ref = "oopdb")
 
 
 library("mnmdb")
