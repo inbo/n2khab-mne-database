@@ -19,11 +19,11 @@ In the future, it might be complementary to the tools already used in [`inbo/n2k
 
 ```r
 # install.packages("remotes")
-remotes::install_github("inbo/n2khab-mne-database", ref = "HEAD")
+remotes::install_github("inbo/mnmdb") # , ref = "HEAD")
 ```
 
-Please note that the repository is called `n2khab-mne-database`, whereas the R package loads under the name `mnmdb`.
-
+Please note that the repository was originally called `n2khab-mne-database` and then renamed.
+The R package loads under the name `mnmdb`.
 
 # Usage
 
